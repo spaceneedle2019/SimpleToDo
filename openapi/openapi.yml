@@ -1,0 +1,513 @@
+---
+openapi: 3.0.3
+info:
+  title: SimpleToDo
+  version: 0.0.1
+  contact:
+    name: Ronny Kraemer
+    email: hello@rk82.net
+    url: https://www.rk82.net
+tags:
+  - name: projects
+    description: projects
+  - name: items
+    description: items of a project
+
+paths:
+  /projects:
+    get:
+      operationId: index
+      description: Returns projects
+      tags: [projects]
+      responses:
+        '200':
+          description: All projects
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                required:
+                  - data
+                properties:
+                  data:
+                   type: array
+                   items:
+                     type: object
+                     additionalProperties: false
+                     required:
+                       - id
+                       - name
+                       - color
+                     properties:
+                       id:
+                         type: number
+                       name:
+                         type: string
+                       color:
+                         type: string
+        '500':
+          description: Internal Server Error
+    post:
+      operationId: create
+      tags: [projects]
+      description: Creates a project
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - data
+              properties:
+                data:
+                  type: object
+                  required:
+                    - name
+                    - color
+                  properties:
+                    name:
+                      type: string
+                      minLength: 1
+                    color:
+                      type: string
+      responses:
+        '201':
+          description: A created project
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                required:
+                  - data
+                properties:
+                  data:
+                    nullable: true
+                    type: object
+                    additionalProperties: false
+                    required:
+                      - id
+                      - name
+                      - color
+                    properties:
+                      id:
+                        type: number
+                      name:
+                        type: string
+                      color:
+                        type: string
+        '400':
+          description: Bad Request
+        '422':
+          description: Unprocessable Entity
+        '500':
+          description: Internal Server Error
+
+  /projects/{projectId}:
+    parameters:
+      - name: projectId
+        in: path
+        required: true
+        description: ID of the project
+        schema:
+          type: number
+    get:
+      operationId: show
+      description: Returns a single project
+      tags: [projects]
+      responses:
+        '200':
+          description: A project
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                required:
+                  - data
+                properties:
+                  data:
+                    nullable: true
+                    type: object
+                    additionalProperties: false
+                    required:
+                      - id
+                      - name
+                      - color
+                    properties:
+                      id:
+                        type: number
+                      name:
+                        type: string
+                      color:
+                        type: string
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+    patch:
+      operationId: update
+      tags: [ projects ]
+      description: Updates a project
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - data
+              properties:
+                data:
+                  type: object
+                  minProperties: 1
+                  properties:
+                    name:
+                      type: string
+                      minLength: 1
+                    color:
+                      type: string
+      responses:
+        '200':
+          description: An updated project
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                required:
+                  - data
+                properties:
+                  data:
+                    nullable: true
+                    type: object
+                    additionalProperties: false
+                    required:
+                      - id
+                      - name
+                      - color
+                    properties:
+                      id:
+                        type: number
+                      name:
+                        type: string
+                      color:
+                        type: string
+        '400':
+          description: Bad Request
+        '422':
+          description: Unprocessable Entity
+        '500':
+          description: Internal Server Error
+    delete:
+      operationId: delete
+      description: Deletes a project
+      tags: [projects]
+      responses:
+        '204':
+          description: No Content
+        '500':
+          description: Internal Server Error
+
+  /projects/{projectId}/items:
+    parameters:
+      - name: projectId
+        in: path
+        required: true
+        description: ID of the project
+        schema:
+          type: number
+    get:
+      operationId: index
+      description: Returns items
+      tags: [items]
+      responses:
+        '200':
+          description: All items
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                required:
+                  - data
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      additionalProperties: false
+                      required:
+                        - id
+                        - checked
+                        - dueDate
+                        - priority
+                      properties:
+                        id:
+                          type: number
+                        name:
+                          type: string
+                        checked:
+                          type: boolean
+                        dueDate:
+                          type: string
+                          format: date
+                          nullable: true
+                        priority:
+                          type: integer
+                          nullable: true
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+    post:
+      operationId: create
+      tags: [items]
+      description: Creates an item
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - data
+              properties:
+                data:
+                  type: object
+                  required:
+                    - name
+                  properties:
+                    name:
+                      type: string
+                      minLength: 1
+                    dueDate:
+                      type: string
+                      format: date
+                      nullable: true
+                    priority:
+                      type: integer
+                      nullable: true
+      responses:
+        '201':
+          description: A created item
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                required:
+                  - data
+                properties:
+                  data:
+                    nullable: true
+                    type: object
+                    additionalProperties: false
+                    required:
+                      - id
+                      - checked
+                      - dueDate
+                      - priority
+                    properties:
+                      id:
+                        type: number
+                      name:
+                        type: string
+                      checked:
+                        type: boolean
+                      dueDate:
+                        type: string
+                        format: date
+                        nullable: true
+                      priority:
+                        type: integer
+                        nullable: true
+        '400':
+          description: Bad Request
+        '422':
+          description: Unprocessable Entity
+        '500':
+          description: Internal Server Error
+
+  /projects/{projectId}/items/{itemId}:
+    parameters:
+      - name: projectId
+        in: path
+        required: true
+        description: ID of the project
+        schema:
+          type: number
+      - name: itemId
+        in: path
+        required: true
+        description: ID of the item
+        schema:
+          type: number
+    get:
+      operationId: show
+      description: Returns a single item
+      tags: [items]
+      responses:
+        '200':
+          description: An item
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                required:
+                  - data
+                properties:
+                  data:
+                    nullable: true
+                    type: object
+                    additionalProperties: false
+                    required:
+                      - id
+                      - checked
+                      - dueDate
+                      - priority
+                    properties:
+                      id:
+                        type: number
+                      name:
+                        type: string
+                      checked:
+                        type: boolean
+                      dueDate:
+                        type: string
+                        format: date
+                        nullable: true
+                      priority:
+                        type: integer
+                        nullable: true
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+    patch:
+      operationId: update
+      description: Updates an item
+      tags: [ items ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - data
+              properties:
+                data:
+                  type: object
+                  minProperties: 1
+                  properties:
+                    name:
+                      type: string
+                      minLength: 1
+                    dueDate:
+                      type: string
+                      format: date
+                      nullable: true
+                    priority:
+                      type: integer
+                      nullable: true
+      responses:
+        '200':
+          description: An updated item
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                required:
+                  - data
+                properties:
+                  data:
+                    nullable: true
+                    type: object
+                    additionalProperties: false
+                    required:
+                      - id
+                      - checked
+                      - dueDate
+                      - priority
+                    properties:
+                      id:
+                        type: number
+                      name:
+                        type: string
+                      checked:
+                        type: boolean
+                      dueDate:
+                        type: string
+                        format: date
+                        nullable: true
+                      priority:
+                        type: integer
+                        nullable: true
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+    delete:
+      operationId: delete
+      description: Deletes an item
+      tags: [ items ]
+      responses:
+        '204':
+          description: No Content
+        '500':
+          description: Internal Server Error
+
+  /projects/{projectId}/items/{itemId}/check:
+    parameters:
+      - name: projectId
+        in: path
+        required: true
+        description: ID of the project
+        schema:
+          type: number
+      - name: itemId
+        in: path
+        required: true
+        description: ID of the item
+        schema:
+          type: number
+    patch:
+      operationId: check
+      description: Checks an item
+      tags: [ items ]
+      responses:
+        '200':
+          description: No Content
+        '500':
+          description: Internal Server Error
+
+  /projects/{projectId}/items/{itemId}/uncheck:
+    parameters:
+      - name: projectId
+        in: path
+        required: true
+        description: ID of the project
+        schema:
+          type: number
+      - name: itemId
+        in: path
+        required: true
+        description: ID of the item
+        schema:
+          type: number
+    patch:
+      operationId: uncheck
+      description: Unchecks an item
+      tags: [ items ]
+      responses:
+        '200':
+          description: No Content
+        '500':
+          description: Internal Server Error

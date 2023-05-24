@@ -1,0 +1,16 @@
+AllCops:
+  NewCops: enable
+
+Style/Documentation:
+  Enabled: false
+
+Metrics/BlockLength:
+  Exclude:
+    - spec/**/*
+    - /**/*.rake
+
+Metrics/MethodLength:
+  Max: 15
+
+Layout/LineLength:
+  Max: 80

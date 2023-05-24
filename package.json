@@ -1,0 +1,8 @@
+{
+  "scripts": {
+    "createApiDocumentation": "redocly build-docs openapi/openapi.yml -o docs/api.html"
+  },
+  "devDependencies": {
+    "@redocly/cli": "^1.0.0-beta.126"
+  }
+}
