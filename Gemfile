@@ -2,6 +2,8 @@
 
 source 'https://rubygems.org'
 
+ruby '3.1.0'
+
 gem 'committee'
 gem 'dotenv'
 gem 'oj'
