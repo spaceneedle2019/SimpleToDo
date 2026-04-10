@@ -2,10 +2,11 @@
 
 source 'https://rubygems.org'
 
-ruby '3.1.0'
+ruby '3.1.7'
 
 gem 'committee'
 gem 'dotenv'
+gem 'nio4r'
 gem 'oj'
 gem 'puma'
 gem 'rake'
