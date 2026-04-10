@@ -2,7 +2,7 @@
 
 source 'https://rubygems.org'
 
-ruby '3.1.7'
+ruby '3.3.5'
 
 gem 'committee'
 gem 'dotenv'
