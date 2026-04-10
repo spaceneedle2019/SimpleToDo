@@ -6,11 +6,11 @@ require 'dotenv'
 Dotenv.load(".env.#{ENV.fetch('RACK_ENV', 'development')}")
 
 def postgres_url
-  ENV.fetch('POSTGRES_URL')
+  ENV.fetch('POSTGRES_URL') { ENV.fetch('DATABASE_URL') }
 end
 
 def database
-  ENV.fetch('POSTGRES_DB')
+  ENV.fetch('POSTGRES_DB') { URI.parse(postgres_url).path[1..] }
 end
 
 def select_database

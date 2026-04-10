@@ -13,5 +13,8 @@ Sequel::Model.plugin :timestamps, update_on_create: true
 Sequel::Model.plugin :forbid_lazy_load
 Sequel::Model.plugin :validation_helpers
 
-DB = Sequel.connect(ENV.fetch('POSTGRES_URL'), max_connections: 5)
+DB = Sequel.connect(ENV.fetch('POSTGRES_URL') do
+  ENV.fetch('DATABASE_URL')
+end, max_connections: 5)
+
 # logger: Logger.new('db.log')
